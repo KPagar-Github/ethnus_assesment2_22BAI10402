@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 7 - Moving Train</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        .scene-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #000022 0%, #001144 100%);
+            border-bottom: 2px solid #333;
+        }
+        
+        .moon {
+            position: absolute;
+            top: 50px;
+            right: 100px;
+            width: 80px;
+            height: 80px;
+            background-color: #fffbcc;
+            border-radius: 50%;
+            box-shadow: 0 0 30px 10px rgba(255, 251, 204, 0.7);
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        .mountain {
+            position: absolute;
+            bottom: 70px;
+            width: 250px;
+            height: 150px;
+            background: linear-gradient(45deg, #111122 0%, #223366 100%);
+            clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+        }
+        
+        .train-track {
+            position: absolute;
+            bottom: 50px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: #555;
+        }
+        
+        .sleeper {
+            position: absolute;
+            bottom: 45px;
+            width: 30px;
+            height: 15px;
+            background-color: #8B4513;
+            transform: translateX(-50%);
+        }
+        
+        .train-container {
+            position: absolute;
+            bottom: 58px;
+            left: -300px;
+            transform: translateY(0);
+            display: flex;
+            flex-direction: row;
+            transition: transform 0.2s;
+        }
+        
+        .engine {
+            width: 180px;
+            height: 100px;
+            background: linear-gradient(to bottom, #333 0%, #111 100%);
+            border-radius: 10px 30px 10px 10px;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+        }
+        
+        .engine::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            left: 80px;
+            width: 30px;
+            height: 60px;
+            background-color: #222;
+            border-radius: 5px;
+        }
+        
+        .cabin {
+            width: 50px;
+            height: 60px;
+            background-color: #222;
+            border-radius: 5px 5px 0 0;
+            margin-left: 5px;
+            position: relative;
+        }
+        
+        .window {
+            position: absolute;
+            width: 30px;
+            height: 20px;
+            background-color: #FFD700;
+            top: 10px;
+            left: 10px;
+            border-radius: 3px;
+        }
+        
+        .chimney {
+            position: absolute;
+            width: 20px;
+            height: 40px;
+            background-color: #333;
+            top: -40px;
+            left: 40px;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .smoke {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: rgba(200, 200, 200, 0.8);
+            border-radius: 50%;
+            top: -50px;
+            left: 42px;
+            opacity: 0;
+        }
+        
+        .wheel {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, #444 0%, #111 100%);
+            border-radius: 50%;
+            border: 5px solid #555;
+            bottom: -20px;
+        }
+        
+        .carriage {
+            width: 150px;
+            height: 70px;
+            background-color: #6b4e2c;
+            border-radius: 10px;
+            margin-left: 10px;
+            position: relative;
+        }
+        
+        .carriage .window {
+            width: 25px;
+            height: 15px;
+            background-color: #add8e6;
+            top: 15px;
+        }
+        
+        .carriage .window:nth-child(1) {
+            left: 15px;
+        }
+        
+        .carriage .window:nth-child(2) {
+            left: 55px;
+        }
+        
+        .carriage .window:nth-child(3) {
+            left: 95px;
+        }
+        
+        .wheel.w1 {
+            left: 30px;
+        }
+        
+        .wheel.w2 {
+            left: 120px;
+        }
+        
+        .wheel.c1 {
+            left: 20px;
+        }
+        
+        .wheel.c2 {
+            left: 100px;
+            bottom: -20px;
+        }
+        
+        .buttons {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        button {
+            font-size: 18px;
+            padding: 10px 30px;
+            margin: 5px;
+            cursor: pointer;
+            background: linear-gradient(to bottom, #4466aa 0%, #2233aa 100%);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 200, 0.3);
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 200, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 10px rgba(0, 0, 200, 0.3);
+        }
+        
+        h2 {
+            margin-top: 30px;
+            color: #aaccff;
+            text-shadow: 0 0 10px rgba(100, 150, 255, 0.5);
+        }
+        
+        .speed-control {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .speed-control label {
+            font-size: 18px;
+            color: #aaccff;
+        }
+        
+        .speed-control input {
+            width: 200px;
+        }
+        
+        .control-panel {
+            background-color: rgba(30, 40, 80, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 0 auto;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0, 0, 100, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="scene-container" id="scene">
+        <div class="moon"></div>
+        <!-- Stars will be added via JavaScript -->
+        
+        <!-- Mountains -->
+        <div class="mountain" style="left: 10%; width: 400px; height: 200px;"></div>
+        <div class="mountain" style="left: 30%; width: 300px; height: 150px;"></div>
+        <div class="mountain" style="left: 60%; width: 350px; height: 180px;"></div>
+        <div class="mountain" style="left: 80%; width: 250px; height: 130px;"></div>
+        
+        <div class="train-track"></div>
+        <!-- Sleepers will be added via JavaScript -->
+        
+        <div class="train-container" id="train">
+            <div class="engine">
+                <div class="chimney"></div>
+                <div class="smoke" id="smoke1"></div>
+                <div class="smoke" id="smoke2"></div>
+                <div class="smoke" id="smoke3"></div>
+                <div class="wheel w1"></div>
+                <div class="wheel w2"></div>
+            </div>
+            <div class="cabin">
+                <div class="window"></div>
+            </div>
+            <div class="carriage">
+                <div class="window"></div>
+                <div class="window"></div>
+                <div class="window"></div>
+                <div class="wheel c1"></div>
+                <div class="wheel c2"></div>
+            </div>
+            <div class="carriage">
+                <div class="window"></div>
+                <div class="window"></div>
+                <div class="window"></div>
+                <div class="wheel c1"></div>
+                <div class="wheel c2"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="control-panel">
+        <h2>Train Animation Controls</h2>
+        <div class="buttons">
+            <button onclick="startTrain()">Start</button>
+            <button onclick="stopTrain()">Stop</button>
+        </div>
+        <div class="speed-control">
+            <label for="speed">Speed:</label>
+            <input type="range" id="speedControl" min="1" max="20" value="5" oninput="changeSpeed()">
+        </div>
+    </div>
+    
+    <script>
+        // Create stars
+        const scene = document.getElementById('scene');
+        
+        for (let i = 0; i < 150; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            
+            const size = Math.random() * 3 + 1;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 60}%`;
+            
+            star.style.animationDelay = `${Math.random() * 3}s`;
+            
+            scene.appendChild(star);
+        }
+        
+        // Create sleepers (railroad ties)
+        for (let i = 0; i < 50; i++) {
+            const sleeper = document.createElement('div');
+            sleeper.className = 'sleeper';
+            sleeper.style.left = `${i * 50}px`;
+            scene.appendChild(sleeper);
+        }
+        
+        let train = document.getElementById("train");
+        let position = -500;
+        let speed = 5;
+        let animation;
+        let smokeInterval;
+        let isDeparting = true;
+        
+        function createSmoke() {
+            const smokes = [
+                document.getElementById('smoke1'),
+                document.getElementById('smoke2'),
+                document.getElementById('smoke3')
+            ];
+            
+            let smokeIndex = 0;
+            
+            smokeInterval = setInterval(() => {
+                const smoke = smokes[smokeIndex];
+                
+                // Reset smoke properties
+                smoke.style.opacity = "0.8";
+                smoke.style.top = "-50px";
+                smoke.style.left = "42px";
+                smoke.style.width = "15px";
+                smoke.style.height = "15px";
+                
+                // Animate the smoke
+                let smokePos = 0;
+                let smokeSize = 15;
+                let smokeOpacity = 0.8;
+                
+                const smokeAnimation = setInterval(() => {
+                    smokePos -= 1;
+                    smokeSize += 0.5;
+                    smokeOpacity -= 0.02;
+                    
+                    smoke.style.top = `${-50 + smokePos}px`;
+                    smoke.style.left = `${42 + smokePos * 0.5}px`;
+                    smoke.style.width = `${smokeSize}px`;
+                    smoke.style.height = `${smokeSize}px`;
+                    smoke.style.opacity = smokeOpacity;
+                    
+                    if (smokeOpacity <= 0) {
+                        clearInterval(smokeAnimation);
+                    }
+                }, 50);
+                
+                smokeIndex = (smokeIndex + 1) % smokes.length;
+            }, 300);
+        }
+        
+        function moveTrain() {
+            position += speed;
+            train.style.left = position + "px";
+            
+            // Simulate train movement bounce
+            const bounce = Math.sin(position * 0.05) * 1;
+            train.style.transform = `translateY(${bounce}px)`;
+            
+            // Rotate wheels proportionally to movement
+            const wheels = document.querySelectorAll('.wheel');
+            wheels.forEach(wheel => {
+                wheel.style.transform = `rotate(${position}deg)`;
+            });
+            
+            const windowWidth = window.innerWidth;
+            
+            // Reset to start when train exits screen
+            if (position > windowWidth + 200) {
+                position = -500;
+            }
+            
+            animation = requestAnimationFrame(moveTrain);
+        }
+        
+        function startTrain() {
+            if (!animation) {
+                moveTrain();
+                createSmoke();
+            }
+        }
+        
+        function stopTrain() {
+            cancelAnimationFrame(animation);
+            clearInterval(smokeInterval);
+            animation = null;
+        }
+        
+        function changeSpeed() {
+            speed = document.getElementById('speedControl').value;
+        }
+        
+        // Move sleepers with the train to create illusion of movement
+        function moveSleepers() {
+            const sleepers = document.querySelectorAll('.sleeper');
+            let sleeperPos = 0;
+            
+            setInterval(() => {
+                sleeperPos -= speed;
+                if (sleeperPos <= -50) sleeperPos = 0;
+                
+                sleepers.forEach((sleeper, index) => {
+                    let pos = ((index * 50) + sleeperPos) % (50 * sleepers.length);
+                    sleeper.style.left = `${pos}px`;
+                });
+            }, 50);
+        }
+        
+        moveSleepers();
+    </script>
+</body>
+</html>
