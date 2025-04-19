@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<title>JS-TASK-6</title>
+<style>
+    body {
+        background-color: #fafafa;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    
+    .instagram-container {
+        max-width: 350px;
+        margin: 0 auto;
+    }
+    
+    .card {
+        background-color: #ffffff;
+        border: 1px solid #dbdbdb;
+        border-radius: 1px;
+        padding: 20px 40px;
+    }
+    
+    .instagram-logo {
+        font-family: 'Grand Hotel', cursive;
+        font-size: 2.5em;
+        text-align: center;
+        margin-bottom: 20px;
+        background: -webkit-linear-gradient(#833ab4, #fd1d1d, #fcb045);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: normal;
+    }
+    
+    .form-control, .input-group-text {
+        background-color: #fafafa;
+        border: 1px solid #dbdbdb;
+        font-size: 0.9em;
+    }
+    
+    .form-control:focus {
+        background-color: #fafafa;
+        border-color: #bbb;
+        box-shadow: none;
+    }
+    
+    .login-button {
+        background: #0095f6;
+        border: none;
+        color: white;
+        font-weight: 600;
+        font-size: 0.9em;
+        padding: 5px 0;
+        border-radius: 4px;
+        width: 100%;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+    
+    .login-button:hover {
+        background: #0086e0;
+    }
+    
+    .login-button:disabled {
+        background: #b2dffc;
+        cursor: default;
+    }
+    
+    .separator {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 20px 0;
+        color: #8e8e8e;
+        font-size: 0.8em;
+        font-weight: 600;
+    }
+    
+    .separator::before, .separator::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #dbdbdb;
+    }
+    
+    .separator::before {
+        margin-right: 10px;
+    }
+    
+    .separator::after {
+        margin-left: 10px;
+    }
+    
+    .facebook-login {
+        color: #385185;
+        font-size: 0.9em;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 20px;
+        text-decoration: none;
+        display: block;
+    }
+    
+    .facebook-icon {
+        margin-right: 5px;
+        font-size: 1.1em;
+    }
+    
+    .forgot-password {
+        color: #385185;
+        font-size: 0.75em;
+        text-align: center;
+        margin-top: 20px;
+        display: block;
+        text-decoration: none;
+    }
+    
+    .signup-card {
+        background-color: #ffffff;
+        border: 1px solid #dbdbdb;
+        border-radius: 1px;
+        padding: 20px;
+        text-align: center;
+        margin-top: 10px;
+        font-size: 0.9em;
+    }
+    
+    .signup-link {
+        color: #0095f6;
+        font-weight: 600;
+        text-decoration: none;
+    }
+    
+    .signup-link:hover {
+        color: #0086e0;
+    }
+    
+    .input-group-text {
+        background-color: #fafafa;
+        border-right: none;
+    }
+    
+    .form-control {
+        border-left: none;
+    }
+    
+    .input-group-text i {
+        color: #8e8e8e;
+    }
+</style>
+</head>
+<body>
+<div class="container-lg mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-6 col-md-5 col-lg-4">
+            <div class="instagram-container">
+                <div class="card mb-3">
+                    <div class="instagram-logo">
+                        Instagram
+                    </div>
+                    <form class="form" action="https://www.instagram.com/accounts/login/" onsubmit="return check()">
+                        <div class="mb-3 input-group">
+                            <span class="input-group-text">
+                                <span class="tt" data-bs-placement="bottom" title="Your username should contain alphabets and can also contain . , _ , number but cannot start with a number">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                            </span>
+                            <input type="text" class="form-control" id="username" placeholder="Phone number, username, or email" required>
+                        </div>
+                        <div class="mb-3 input-group">
+                            <span class="input-group-text">
+                                <span class="tt" data-bs-placement="bottom" title="Your Password should contain minimum of 8 characters which should include atleast 1 symbol, 1 number, uppercase and lowercase characters but cannot start with a number">
+                                    <i class="bi bi-lock"></i>
+                                </span>
+                            </span>
+                            <input type="password" class="form-control" id="password" placeholder="Password" required>
+                        </div>
+                        <div>
+                            <button type="submit" class="login-button" id="submit">Log in</button>
+                        </div>
+                        
+                        <div class="separator">OR</div>
+                        
+                        <a href="#" class="facebook-login">
+                            <i class="bi bi-facebook facebook-icon"></i>Log in with Facebook
+                        </a>
+                        
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                    </form>
+                </div>
+                
+                <div class="signup-card">
+                    Don't have an account? <a href="#" class="signup-link">Sign up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function check() {
+    // Add your validation logic here
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    // Validate username
+    const usernameRegex = /^[a-zA-Z][a-zA-Z0-9._]*$/;
+    if (!usernameRegex.test(username)) {
+        alert("Username should start with a letter and can contain only letters, numbers, periods, and underscores.");
+        return false;
+    }
+    
+    // Validate password
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+    if (!passwordRegex.test(password)) {
+        alert("Password must be at least 8 characters and include at least one uppercase letter, one lowercase letter, one number, and one special character.");
+        return false;
+    }
+    
+    return true;
+}
+
+// Enable Bootstrap tooltips
+document.addEventListener('DOMContentLoaded', function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('.tt'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
